@@ -2,13 +2,16 @@
 
 一些关于初次学习Web的记录。
 
+### HTML
 
-### Markdown
+HTML是超文本标记语言（HyperText Markup Language）的缩写。
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+HTML 是构成 Web 世界的一砖一瓦。它定义了网页内容的含义和结构。
+
+HTML 不是一门编程语言，而是一种用于定义内容结构的标记语言。
+
 
 ```markdown
-Syntax highlighted code block
 
 # Header 1
 ## Header 2
