@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## Learning Record
 
 You can use the [editor on GitHub](https://github.com/kanekikeh/kanekikeh.github.com/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
 
