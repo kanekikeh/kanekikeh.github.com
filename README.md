@@ -13,11 +13,11 @@
 <head>
   <meta charset="utf-8">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <title>（网页标题）</title>
+  <title>【网页标题】</title>
 </head>
 <body>
-  <h1>（页面主标题）</h1>
-  <p>（文本内容）</p>
+  <h1>【页面主标题】</h1>
+  <p>【文本内容】</p>
 </body>
 </html>
 ```
