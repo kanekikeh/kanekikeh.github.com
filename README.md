@@ -21,9 +21,9 @@
 </body>
 </html>
 ```
-#### 粗略解析
+#### 结构解析
 1.<!DOCTYPE html>: 声明文档类型。（可有可无。）  
-2.<html></html>: <html>元素。包含整个完整的页面。（根元素，其它元素都嵌套在其中。） 
+2.<html></html>: <html>元素。包含整个完整的页面。（根元素，其它元素都嵌套在其中。）  
 3.<head></head>: <head>元素。 包含所有想包含在HTML页面中但不想在HTML页面中显示的内容。（包括想在搜索结果中出现的关键字和页面描述，CSS样式，字符集声明等等。）  
 4.<meta charset="utf-8">: 设置文档使用utf-8字符集编码。（utf-8字符集包含了人类大部分的文字。）  
 5.<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">: 指定页面的图标。（出现在浏览器标签上。）  
