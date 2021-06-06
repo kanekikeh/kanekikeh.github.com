@@ -1,12 +1,12 @@
-# Learning Record
+#### Learning Record
 
 一些关于初次学习Web的记录。
 
-## HTML
+# HTML
 
 简介：HTML是超文本标记语言（HyperText Markup Language）的缩写。HTML 是构成 Web 世界的一砖一瓦。它定义了网页内容的含义和结构。HTML 不是一门编程语言，而是一种用于定义内容结构的标记语言。
 
-### HTML 文档结构
+## HTML 文档结构
 ```markdown
 <!DOCTYPE html>
 <html>
@@ -21,7 +21,7 @@
 </body>
 </html>
 ```
-### 结构解析
+## 结构解析
 1.`<!DOCTYPE html>`: 声明文档类型。（可有可无。）  
 2.`<html></html>`: <html>元素。包含整个完整的页面。（根元素，其它元素都嵌套在其中。）  
 3.`<head></head>`: <head>元素。 包含所有想包含在HTML页面中但不想在HTML页面中显示的内容。（包括想在搜索结果中出现的关键字和页面描述，CSS样式，字符集声明等等。）  
@@ -31,7 +31,7 @@
 7.`<body></body>`: <body>元素。 包含页面所有内容，如文本，图片，音频，游戏等等。  
 
 
-## CSS
+# CSS
 简介：CSS是级联样式表（Cascading Style Sheets）的缩写。HTML 用于撰写页面的内容，而 CSS 将决定这些内容该如何在屏幕上呈现。如果说HTML是一砖一瓦，那么css就是房屋的修饰如油漆、墙纸等。
 
 
