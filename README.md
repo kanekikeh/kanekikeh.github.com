@@ -86,9 +86,9 @@ HTML提供了从小到大六级标题，分别是`<h1>`~`<h6>`。
 
 | 例子 | 解释 |
 | -----|:----:| 
-| <img src="picture.jpg"> | 该图片文件与当前文档在同一目录中 | 
-| <img src="./images/picture.jpg"> | 该图片文件在当前目录下的images目录中 | 
-| <img src="../picture.jpg"> | 该图片文件在上一级目录中 |
+| `<img src="picture.jpg">` | 该图片文件与当前文档在同一目录中 | 
+| `<img src="./images/picture.jpg">` | 该图片文件在当前目录下的images目录中 | 
+| `<img src="../picture.jpg">` | 该图片文件在上一级目录中 |
  
 
 ### 特殊元素
