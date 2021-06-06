@@ -305,11 +305,43 @@ HTML 的元素可以以称为区块 或 内联的方式进行显示。
 
 #### 生效方式
 ##### 外部样式表
+新建一个 HTML文件（后缀为.html)。  
+在同一目录新建一个样式表文件mycss.css（注意后缀名为css）。  
+注意：  
+ 一般我们会在项目目录下建一个文件夹如css专门存放样式表文件，如此我们引入样式文件时路径就变为 ./css/mycss.css之类的。
 
 ##### 内部样式表
+样式放在 HTML 文件中，这称为内部样式表。
+在`<head>`元素中引入了`<style>`标签，放入了样式。
+```markdown
+<head>
+  <meta charset="utf-8">
+  <!-- 注意下面这个语句，将导入外部的 mycss.css 样式表文件 -->
+  <link rel="stylesheet" type="text/css" href="mycss.css">
+  <title>页面标题</title>
+  <style>
+    body {
+      background-color: linen;
+      text-align: center;
+    }
+  </style>
+</head>
+```
+提示：只有页面的样式规则较少时可采用这种方式。
 
 ##### 内联样式
+直接把样式规则直接写到要应用的元素中，如下：
+```markdown
+<h3 style="color:green;">I am a heading</h3>
+```
+提示：内联样式是最不灵活的一种方式，完全将内容和样式合在一起，实际应用中非常少见。
 
+##### 级联的优先级
+从高到低分别为：  
+1\.内联样式  
+2\.内部样式表或外部样式表  
+3\.浏览器缺省样式  
+提示：哪个样式定义离元素的距离近，哪个就生效。
 
 
 ####
