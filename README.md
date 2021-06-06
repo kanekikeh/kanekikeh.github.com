@@ -384,4 +384,205 @@ HTML 的元素可以以称为区块 或 内联的方式进行显示。
 ```
 ##### 对齐
 对于元素中的文本，我们可以简单的设置`text-align`属性为`left`, `center`, `right`即可（显然缺省的是左对齐），上例中已有相关的应用。
-####
+#### 盒子模型
+盒子模型指的是一个 HTML 元素可以看作一个盒子。从内到外，这个盒子是由`内容 (content)`, `内边距 (padding)`, `边框 (border)`, `外边距 (margin)`构成的。  
+说明：  
+1\.Content 盒子的内容，如文本、图片等  
+2\.Padding 填充，也叫内边距，即内容和边框之间的区域  
+3\.Border 边框，默认不显示  
+4\.Margin 外边距，边框以外与其它元素的区域  
+使用：  
+新建HTML文件： 
+```markdown
+<html>
+  <head>
+    <link rel="stylesheet" href="./mycss.css">
+  </head>
+  <body>
+    <div class="box1">我是内容，外面红色的是我的边框。注意边框的内外都有25px的距离。</div>
+  </body>
+</html>
+```
+再建对应的css文件如下：  
+```markdown
+.box1 {
+  height: 200px;
+  width: 200px;
+  background-color:#615200;
+  color: aliceblue;
+  border: 10px solid red;
+  padding: 25px;
+  margin: 25px;
+}
+```
+#### 边框与边距
+无论边框、内边距还是外边距，它们都有上下左右四个方向。
+##### 边框
+```markdown
+<p class="example-1">I have black borders on all sides.</p>
+<p class="example-2">I have a blue bottom border.</p>
+<p class="example-3">I have rounded grey borders.</p>
+<p class="example-4">I have a purple left border.</p>
+```
+```markdown
+.example-1 {
+  border: 1px dotted black; /* 上下左右都相同 */
+}
+.example-2 {
+  border-bottom: 1px solid blue; /* 只设置底部边框 */
+}
+.example-3 {
+  border: 1px solid grey;
+  border-radius: 15px; /* 边框圆角 */
+}
+.example-4 {
+  border-left: 5px solid purple;
+}
+```
+##### 边距
+内边距设置：
+```markdown
+padding: 20px; /* 上下左右都相同 */
+padding-top: 20px;
+padding-bottom: 100px;
+padding-right: 50px;
+padding-left: 80px;
+padding: 25px 50px 75px 100px; /* 简写形式，按上，右，下，左顺序设置 */
+padding: 25px 10px; /* 简写形式，上下为25px，左右为10px */
+```
+#### 定位
+`position`属性用于对元素进行定位。该属性有以下一些值：  
+\*static 静态  
+\*relative 相对  
+\*fixed 固定  
+\*absolute 绝对  
+设置了元素的`position`属性后，我们才能使用`top`, `bottom`, `left`, `right`属性，否则定位无效。
+##### static
+设置为静态定位`position: static`;，这是元素的默认定位方式，也即你设置与否，元素都将按正常的页面布局进行。  
+即：按照元素在 HTML出现的先后顺序从上到下，从左到右进行元素的安排。  
+##### relarive
+设置为相对定位`position: relative;`，这将把元素相对于他的静态（正常）位置进行偏移。  
+试试如下的代码：
+```markdown
+<!-- HTML -->
+<div class="example-relative">内容</div>
+<!-- CSS -->
+.example-relative {
+  position: relative;
+  left: 60px;
+  top: 40px;
+  background-color: rgb(173, 241, 241);
+}
+```
+##### fixed
+设置为固定定位`position: fixed;`，这将使得元素固定不动（即使你上下左右拖动浏览器的滚动条）。  
+此时元素固定的位置仍由`top`, `bottom`, `left`, `right`属性确定，但相对的是视口（viewport，就是浏览器的屏幕可见区域）。  
+
+##### absolute
+设置为绝对定位`position: absolute;`，将使元素相对于其最近设置了定位属性（非static）的父元素进行偏移。  
+如果该元素的所有父元素都没有设置定位属性，那么就相对于`<body>`这个父元素。  
+
+#### 溢出
+当元素内容超过其指定的区域时，我们通过溢出`overflow`属性来处理这些溢出的部分。  
+溢出属性有一下几个值：
+\*visible 默认值，溢出部分不被裁剪，在区域外面显示
+\*hidden 裁剪溢出部分且不可见
+\*scroll 裁剪溢出部分，但提供上下和左右滚动条供显示
+\*auto 裁剪溢出部分，视情况提供滚动条
+使用方法：  
+```markdown
+<!-- HTML -->
+<div class="example-overflow-scroll-y">You can use the overflow property when you want to have better control of the
+    layout. The overflow property specifies what happens if content overflows an element's box.
+</div>
+<!-- CSS -->
+.example-overflow-scroll-y {
+  width: 200px;
+  height: 100px;
+  background-color: #eee;
+  overflow-y: scroll;
+}
+```
+
+#### 浮动
+在一个区域或容器内，我们可以设置`float`属性让某元素水平方向上向左或右进行移动，其周围的元素也会重新排列。  
+一个浮动元素会尽量向左或向右移动，直到它的外边缘碰到包含框或另一个浮动框的边框为止。浮动元素之后的元素将围绕它。  
+一个元素浮动后，其后的元素将尽可能包围它，或者说出现在这个浮动元素的左或右方。  
+如果希望浮动元素后面的元素在其下方显示，可使用`clear: both`样式来进行清除。  
+#### 不透明度
+我们可以用`opacity`对任何元素（不过常用于图片）设置不透明度。  
+值在`[0.0～1.0]`之间，值越低，透明度越高。
+#### 组合选择器
+前面我们学习了 CSS有三种选择器：元素、id 和 class 。但我们也可以进行组合，以得到简洁精确的选择。
+##### 后代选择器
+以空格作为分隔，如：`.haha p `代表在`div`元素内有`.haha`这种类的所有元素。
+使用方法：
+```markdown
+<html>
+<head>
+  <style>
+    .haha p {
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+  <div class="haha">
+    <p>Paragraph 1 in the div .haha.</p>
+    <span>
+        <p>Paragraph 2 in the div .haha.</p>
+    </span>
+  </div>
+  <p>Paragraph 3. Not in a div .haha.</p>
+</body>
+</html>
+```
+段落1、2都将有黄色的背景，而段落3没有。
+
+
+##### 子选择器（后代选择器）
+也称为直接后代选择器，以`>`作为分隔，如：`.haha > p `代表在有`.haha`类的元素内的直接`<p>`元素。
+使用方法：
+```markdown
+<html>
+<head>
+  <style>
+    .haha > p {
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+  <div class="haha">
+    <p>Paragraph 1 in the div .haha.</p>
+    <span>
+        <p>Paragraph 2 in the div .haha - it is descendant but not immediate child.</p>
+    </span> <!-- not Child but Descendant -->
+  </div>
+</body>
+</html>
+```
+虽然段落2在`.haha`类中，但它的直接父元素是`span`，不是`.haha`的直接后代，所以不能选择。只有段落1有黄色背景。
+#### 伪类和伪元素
+伪类（pseudo-class）或伪元素（pseudo-element）用于定义元素的某种特定的状态或位置等。  
+使用伪类/伪元素的语法如下：
+```markdown
+/* 选择器后使用 : 号，再跟上某个伪类/伪元素 */
+selector:pseudo-class/pseudo-element {
+  property:value;
+}
+```
+以下是常用的伪类/伪元素的简单使用：
+```markdown
+a:link {color:#FF0000;}     /* 未访问的链接 */
+a:visited {color:#00FF00;}  /* 已访问的链接 */
+a:hover {color:#FF00FF;}    /* 鼠标划过链接 */
+/* 鼠标移到段落则改变背景颜色 */
+p:hover {background-color: rgb(226, 43, 144);}
+p:first-line{color:blue;}   /* 段落的第一行显示蓝色 */
+p:first-letter{font-size: xx-large;}   /* 段落的第一个字超大 */
+
+h1:before { content:url(smiley.gif); } /* 在每个一级标题前插入该图片 */
+h1:after { content:url(smiley.gif); } /* 在每个一级标题后插入该图片 */
+```
+
