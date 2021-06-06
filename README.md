@@ -344,5 +344,44 @@ HTML 的元素可以以称为区块 或 内联的方式进行显示。
 提示：哪个样式定义离元素的距离近，哪个就生效。
 
 
-####
+#### 基础
+##### 颜色
+颜色在网页中的重要性不言而喻。
+我们可以采用颜色名称也可以使用颜色RGB16进制值，来设定前景或背景的颜色。如：
+```markdown
+<!--颜色名称-->
+<h3 style="background-color:Tomato;">Tomato</h3>
+<!--颜色值，3个字节分别代表RGB（Red，Green，Blue）的0～255的值-->
+<h3 style="background-color:#ff0000;">#ff0000</h3>
+<!--文本颜色-->
+<h3 style="color:Tomato;">Hello World</h3>
+```
+注意：为演示方便，我们的样式采用了内联方式，实际中不能这样做！如果需要好的配色方案可去<https://colordrop.io/>或<https://www.webdesignrankings.com/resources/lolcolors/>挑选。
+
+##### 尺寸
+我们可以用 `height` 和 `width` 设定元素内容占据的尺寸。常见的尺寸单位有：像数 `px`，百分比 `%`等。  
+新建如下 HTML 文件：
+```markdown
+<html>
+  <head>
+    <link rel="stylesheet" href="./mycss.css">
+  </head>
+  <body>
+    <div class="example-1">
+      这个元素高 200 pixels，占据全部宽度
+    </div>
+  </body>
+</html>
+```
+再建对应的 CSS 文件如下：
+```markdown
+.example-1 {
+  width: 100%;
+  height: 200px;
+  background-color: powderblue;
+  text-align: center;
+}
+```
+##### 对齐
+对于元素中的文本，我们可以简单的设置`text-align`属性为`left`, `center`, `right`即可（显然缺省的是左对齐），上例中已有相关的应用。
 ####
