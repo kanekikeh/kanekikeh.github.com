@@ -248,7 +248,7 @@ HTML 的元素可以以称为区块 或 内联的方式进行显示。
 在 HTML 中，某些字符是预留的。
 在 HTML 中不能使用小于号（<）和大于号（>），这是因为浏览器会误认为它们是标签。
 如果希望正确地显示预留字符，我们必须在 HTML 源代码中使用字符实体（character entities）。  
-特殊字符可参考![ISO-8859-1 参考手册](https://www.runoob.com/tags/ref-entities.html)
+特殊字符可参考![ISO-8859-1 参考手册]<https://www.runoob.com/tags/ref-entities.html>
 
 
 # CSS
