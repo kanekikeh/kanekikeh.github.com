@@ -89,7 +89,97 @@ HTML提供了从小到大六级标题，分别是`<h1>`~`<h6>`。
 | `<img src="picture.jpg">` | 该图片文件与当前文档在同一目录中 | 
 | `<img src="./images/picture.jpg">` | 该图片文件在当前目录下的images目录中 | 
 | `<img src="../picture.jpg">` | 该图片文件在上一级目录中 |
- 
+
+### 表格
+使用格式如下：  
+```markdown
+  <table>
+    <tr>
+      <th>Firstname</th>
+      <th>Lastname</th>
+      <th>Age</th>
+    </tr>
+    <tr>
+      <td>Jill</td>
+      <td>Smith</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <td>Eve</td>
+      <td>Jackson</td>
+      <td>94</td>
+    </tr>
+  </table>
+```
+其中`<tr>`表示行, `<td>`表示行中的单元, `<th>`是表头的单元。
+
+#### 无序列表
+无序列表使用`<ul>`标签，默认使用实心圆点作为每项的标志，其它的标志可以是空心圆circle，实心方块square以及不出现标志。
+```markdown
+<ul>
+<!--<ul type="square">-->
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+```
+#### 有序列表
+有序列表使用`<ol>`标签，默认使用数字作为每项的标志，其它的标志可以是大写字母A，小写字母a，罗马字母i等。
+```markdown
+<ol>
+<!--<ol type="a">-->
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+```
+### 表单
+当网站需要获取我们的一些信息如：用户名、密码、选择买什么、买多少、提出意见等等时，我们就需要使用表单（form）来让用户填写或选择。
+```markdown
+<form>
+  <!-- 文本框，注意有 placeholder 提示符 -->
+  用户名：<br>
+  <input type="text" name="name" placeholder="请输入用户名"><br>
+  <!-- 密码框 -->
+  密码：<br>
+  <input type="password" name="ps" placeholder="请输入密码"><br>
+  年龄：<br>
+  <!-- 数字输入框，注意 min 和 value 属性-->
+  <input type="number" name="age" min="18" value="18"><br>
+  <!-- 单选按钮, 注意 checked 属性 -->
+  性别：<br>
+  <input type="radio" name="gender" value="male" checked> 男<br>
+  <input type="radio" name="gender" value="female"> 女<br>
+  <input type="radio" name="gender" value="other"> 其它<br>
+  <!-- 下拉列表，注意 selected 属性 -->
+  党派：<br>
+  <select name="party">
+    <option value="D">民主党</option>
+    <option value="R" selected>共和党</option>
+    <option value="N">无党派</option>
+  </select><br>
+  <!-- 多选框 -->
+  您有哪些交通工具：<br>
+  <input type="checkbox" name="vehicle1" value="Bike"> 自行车<br>
+  <input type="checkbox" name="vehicle2" value="Motocycle" checked> 摩托车<br>
+  <input type="checkbox" name="vehicle3" value="Car"> 轿车<br>
+  <input type="checkbox" name="vehicle4" value="Jet"> 飞机<br>
+  <!-- 日期选择器 -->
+  您的工作日期：<br>
+  <input type="date"><br>
+  <!-- 文件选择器 -->
+  上传您的照片:<br>
+  <input type="file" name="photo"><br>
+  <!-- 文本输入区域，注意 rows 和 cols 属性 -->
+  您的建议：<br>
+  <textarea name="message" rows="5" cols="30">
+    The cat was playing in the garden.
+  </textarea><br><hr>
+  <!-- 表单提交/重置按钮，将表单中的数据取消或传输给服务器端进行处理 -->
+  <input type="submit" value="提 交">
+  <input type="reset" value="重 置">
+</form>
+```
 
 ### 特殊元素
 #### 注释
@@ -123,8 +213,42 @@ HTML提供了从小到大六级标题，分别是`<h1>`~`<h6>`。
 2\.属性名称，后面跟着一个 = 号。  
 3\.一个属性值，由一对引号 "" 引起来。  
 
-####
+### 元素显示的方式
+HTML 的元素可以以称为区块 或 内联的方式进行显示。
+#### 区块元素
+区块元素在浏览器显示时，通常会以新行来开始（和结束）。如：`<h1>`, `<pre>`, `<ul>`, `<table>`，`<div>` 等。
+```markdown
+<h2>区块元素</h2>
+<div>Hello</div>
+<div>World</div>
+<p>单独一行</p>
+```
+#### 内联元素
+内联元素相反，他们总是一个接一个进行显示，不会新起一行。如： `<span>`, `<input>`, `<td>`, `<a>`, `<img>`等。
+```markdown
+<h3>下面的元素将在一行中显示</h3>
+<span>姓名：</span>
+<input name="username">
+<span>哈哈哈</span>
+<a href="https://google.com/">Google</a>
+<img src="https://mdbootstrap.com/img/logo/mdb192x192.jpg">
+```
 
+### 预设格式
+如果你想在网页中展示一首诗或一些特别格式的文本，那么请使用pre标签。
+```markdown
+<pre>
+涉江采芙蓉，兰泽多芳草。
+采之欲遗谁，所思在远道。
+还顾望旧乡，长路漫浩浩。
+同心而离居，忧伤以终老。
+</pre>
+```
+### 特殊字符
+在 HTML 中，某些字符是预留的。
+在 HTML 中不能使用小于号（<）和大于号（>），这是因为浏览器会误认为它们是标签。
+如果希望正确地显示预留字符，我们必须在 HTML 源代码中使用字符实体（character entities）。  
+特殊字符可参考<https://www.runoob.com/tags/ref-entities.html>
 
 
 # CSS
