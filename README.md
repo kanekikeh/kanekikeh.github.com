@@ -1,1 +1,1 @@
-live well，work well，love well.
+Live well，work well，love well.
