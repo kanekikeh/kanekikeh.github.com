@@ -1,1 +1,1 @@
-好好生活
+live well，work well，love well.
