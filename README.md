@@ -2,110 +2,243 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>自由贪吃蛇</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-  <style>
-    body,html{padding:0;margin:0;overscroll-behavior:none;overflow:hidden}.links{position:fixed;bottom:10px;right:10px;font-size:18px;font-family:sans-serif;background-color:white;padding:10px}a{text-decoration:none;color:black;margin-left:1em}a:hover{text-decoration:underline}a img.icon{display:inline-block;height:1em;margin:0 0 -0.1em 0.3em}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>霓虹灯数字时钟</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            background: #2f363e
+        }
+
+        .clock {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            scale: 2;
+            box-shadow: inset 5px 5px 25px rgba(0, 0, 0, 0.25);
+            border-radius: 50%
+        }
+
+        #time {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center
+        }
+
+        #time .circle {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center
+        }
+
+        #time .circle svg {
+            position: relative;
+            transform: rotate(270deg)
+        }
+
+        #time .circle:nth-child(1) svg {
+            width: 250px;
+            height: 250px
+        }
+
+        #time .circle:nth-child(2) svg {
+            width: 210px;
+            height: 210px
+        }
+
+        #time .circle:nth-child(3) svg {
+            width: 170px;
+            height: 170px
+        }
+
+        #time .circle svg circle {
+            width: 100%;
+            height: 100%;
+            fill: transparent;
+            stroke-width: 5;
+            stroke: var(--clr);
+            transform: translate(5px, 5px);
+            opacity: 0.25
+        }
+
+        #time .circle:nth-child(1) svg circle {
+            stroke-dasharray: 760;
+            stroke-dashoffset: 760
+        }
+
+        #time .circle:nth-child(2) svg circle {
+            stroke-dasharray: 630;
+            stroke-dashoffset: 630
+        }
+
+        #time .circle:nth-child(3) svg circle {
+            stroke-dasharray: 510;
+            stroke-dashoffset: 510
+        }
+
+        .dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            z-index: 10
+        }
+
+        .dots::before {
+            content: "";
+            position: absolute;
+            top: -3px;
+            width: 15px;
+            height: 15px;
+            background: var(--clr);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--clr), 0 0 40px var(--clr), 0 0 60px var(--clr), 0 0 80px var(--clr)
+        }
+
+        .niddles {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 10
+        }
+
+        .niddles i {
+            position: absolute;
+            width: 2px;
+            background: var(--clr2);
+            height: 50%;
+            opacity: 0.75;
+            border-radius: 6px;
+            transform-origin: bottom;
+            transform: scaleY(0.5)
+        }
+
+        .niddles.niddles2 {
+            width: 170px;
+            height: 170px;
+            z-index: 9
+        }
+
+        .niddles.niddles2 i {
+            width: 3px
+        }
+
+        .niddles.niddles3 {
+            width: 140px;
+            height: 140px;
+            z-index: 8
+        }
+
+        .niddles.niddles3 i {
+            width: 4px
+        }
+
+        #time span {
+            position: absolute;
+            inset: 55px;
+            text-align: center;
+            color: #999;
+            font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+            transform: rotate(calc(30deg * var(--i)))
+        }
+
+        #time span b {
+            font-size: 0.75em;
+            font-weight: 500;
+            display: inline-block;
+            transform: rotate(calc(-30deg * var(--i)))
+        }
+    </style>
 </head>
 
 <body>
-  <canvas></canvas>
-  <div class="links">
-    <a href="https://dev.to/uuuuuulala/coding-an-interactive-and-damn-satisfying-cursor-7-simple-steps-2kb-of-code-1c8b"
-      target="_blank">
-  </div>
+<div class="clock">
+    <div id="time">
+        <div class="circle" style="--clr:#ff2972">
+            <div class="dots sec_dot"></div>
+            <svg>
+                <circle cx="120" cy="120" r="120" id="ss"></circle>
+            </svg>
+        </div>
+        <div class="circle" style="--clr:#fee800">
+            <div class="dots min_dot"></div>
+            <svg>
+                <circle cx="100" cy="100" r="100" id="mm"></circle>
+            </svg>
+        </div>
+        <div class="circle" style="--clr:#04fc43">
+            <div class="dots hr_dot"></div>
+            <svg>
+                <circle cx="80" cy="80" r="80" id="hh"></circle>
+            </svg>
+        </div>
+        <div class="niddles" style="--clr2:#ff2972;" id="sc"><i></i></div>
+        <div class="niddles niddles2" style="--clr2:#fee800;" id="mn"><i></i></div>
+        <div class="niddles niddles3" style="--clr2:#04fc43;" id="hr"><i></i></div>
+
+        <span style="--i:1;"><b>1</b></span>
+        <span style="--i:2;"><b>2</b></span>
+        <span style="--i:3;"><b>3</b></span>
+        <span style="--i:4;"><b>4</b></span>
+        <span style="--i:5;"><b>5</b></span>
+        <span style="--i:6;"><b>6</b></span>
+        <span style="--i:7;"><b>7</b></span>
+        <span style="--i:8;"><b>8</b></span>
+        <span style="--i:9;"><b>9</b></span>
+        <span style="--i:10;"><b>10</b></span>
+        <span style="--i:11;"><b>11</b></span>
+        <span style="--i:12;"><b>12</b></span>
+    </div>
+</div>
 </body>
 <script>
-  const canvas = document.querySelector("canvas");
-  const ctx = canvas.getContext('2d');
-  let mouseMoved = false;
-
-  const pointer = {
-    x: .5 * window.innerWidth,
-    y: .5 * window.innerHeight,
-  }
-  const params = {
-    pointsNumber: 40,
-    widthFactor: .3,
-    mouseThreshold: .6,
-    spring: .4,
-    friction: .5
-  };
-
-  const trail = new Array(params.pointsNumber);
-  for (let i = 0; i < params.pointsNumber; i++) {
-    trail[i] = {
-      x: pointer.x,
-      y: pointer.y,
-      dx: 0,
-      dy: 0,
-    }
-  }
-
-  window.addEventListener("click", e => {
-    updateMousePosition(e.pageX, e.pageY);
-  });
-  window.addEventListener("mousemove", e => {
-    mouseMoved = true;
-    updateMousePosition(e.pageX, e.pageY);
-  });
-  window.addEventListener("touchmove", e => {
-    mouseMoved = true;
-    updateMousePosition(e.targetTouches[0].pageX, e.targetTouches[0].pageY);
-  });
-
-  function updateMousePosition(eX, eY) {
-    pointer.x = eX;
-    pointer.y = eY;
-  }
-
-  setupCanvas();
-  update(0);
-  window.addEventListener("resize", setupCanvas);
-
-
-  function update(t) {
-
-    if (!mouseMoved) {
-      pointer.x = (.5 + .3 * Math.cos(.002 * t) * (Math.sin(.005 * t))) * window.innerWidth;
-      pointer.y = (.5 + .2 * (Math.cos(.005 * t)) + .1 * Math.cos(.01 * t)) * window.innerHeight;
-    }
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    trail.forEach((p, pIdx) => {
-      const prev = pIdx === 0 ? pointer : trail[pIdx - 1];
-      const spring = pIdx === 0 ? .4 * params.spring : params.spring;
-      p.dx += (prev.x - p.x) * spring;
-      p.dy += (prev.y - p.y) * spring;
-      p.dx *= params.friction;
-      p.dy *= params.friction;
-      p.x += p.dx;
-      p.y += p.dy;
+    setInterval(() => {
+        let hh = document.getElementById("hh");
+        let mm = document.getElementById("mm");
+        let ss = document.getElementById("ss");
+        let sec_dot = document.querySelector(".sec_dot");
+        let min_dot = document.querySelector(".min_dot");
+        let hr_dot = document.querySelector(".hr_dot");
+        let hr = document.getElementById("hr");
+        let mn = document.getElementById("mn");
+        let sc = document.getElementById("sc");
+        let h = new Date().getHours();
+        let m = new Date().getMinutes();
+        let s = new Date().getSeconds();
+        hh.style.strokeDashoffset = 510 - (510 * h) / 12;
+        mm.style.strokeDashoffset = 630 - (630 * m) / 60;
+        ss.style.strokeDashoffset = 760 - (760 * s) / 60;
+        sec_dot.style.transform = `rotateZ(${s * 6}deg)`;
+        min_dot.style.transform = `rotateZ(${m * 6}deg)`;
+        hr_dot.style.transform = `rotateZ(${h * 30}deg)`;
+        hr.style.transform = `rotateZ(${h * 30}deg)`;
+        mn.style.transform = `rotateZ(${m * 6}deg)`;
+        sc.style.transform = `rotateZ(${s * 6}deg)`
     });
-
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    ctx.moveTo(trail[0].x, trail[0].y);
-
-    for (let i = 1; i < trail.length - 1; i++) {
-      const xc = .5 * (trail[i].x + trail[i + 1].x);
-      const yc = .5 * (trail[i].y + trail[i + 1].y);
-      ctx.quadraticCurveTo(trail[i].x, trail[i].y, xc, yc);
-      ctx.lineWidth = params.widthFactor * (params.pointsNumber - i);
-      ctx.stroke();
-    }
-    ctx.lineTo(trail[trail.length - 1].x, trail[trail.length - 1].y);
-    ctx.stroke();
-
-    window.requestAnimationFrame(update);
-  }
-
-  function setupCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
 </script>
 </html>
