@@ -1,22 +1,20 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fireflowers</title>
-    <style>
-        body {
-            margin: 0;
-            background: black;
-            overflow: hidden;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>best wishes</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  <style>
+    body,html{padding:0;margin:0}canvas{width:100%;height:100vh}
+  </style>
 </head>
 
 <body>
-    <canvas id="fireworksCanvas"></canvas>
+  <canvas id="confetti"></canvas>
 </body>
 <script>
-    const canvas=document.getElementById("fireworksCanvas");const ctx=canvas.getContext("2d");canvas.width=window.innerWidth;canvas.height=window.innerHeight;function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}window.addEventListener("resize",resizeCanvas,false);class Firework{constructor(){this.x=Math.random()*canvas.width;this.y=canvas.height;this.sx=Math.random()*3-1.5;this.sy=Math.random()*-3-3;this.size=Math.random()*2+1;this.shouldExplode=false;const colorVal=Math.round(0xffffff*Math.random());const r=colorVal>>16;const g=(colorVal>>8)&255;const b=colorVal&255;this.r=r;this.g=g;this.b=b}update(){if(this.sy>=-2||this.y<=100||this.x<=0||this.x>=canvas.width){this.shouldExplode=true}else{this.sy+=0.01}this.x+=this.sx;this.y+=this.sy}draw(){ctx.fillStyle=`rgb(${this.r},${this.g},${this.b})`;ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill()}}class Particle{constructor(x,y,r,g,b){this.x=x;this.y=y;this.sx=Math.random()*3-1.5;this.sy=Math.random()*3-1.5;this.size=Math.random()*2+1;this.life=100;this.r=r;this.g=g;this.b=b}update(){this.x+=this.sx;this.y+=this.sy;this.life-=1}draw(){ctx.fillStyle=`rgba(${this.r},${this.g},${this.b},${this.life/100})`;ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill()}}const fireworks=[new Firework()];const particles=[];function animate(){ctx.fillStyle="rgba(0, 0, 0, 0.2)";ctx.fillRect(0,0,canvas.width,canvas.height);if(Math.random()<0.05){fireworks.push(new Firework())}for(let i=fireworks.length-1;i>=0;i--){fireworks[i].update();fireworks[i].draw();if(fireworks[i].shouldExplode){for(let j=0;j<50;j++){particles.push(new Particle(fireworks[i].x,fireworks[i].y,fireworks[i].r,fireworks[i].g,fireworks[i].b))}fireworks.splice(i,1)}}for(let i=particles.length-1;i>=0;i--){particles[i].update();particles[i].draw();if(particles[i].life<=0){particles.splice(i,1)}}requestAnimationFrame(animate)}animate();
+  const confetti=document.getElementById('confetti');const confettiCtx=confetti.getContext('2d');let container,confettiElements=[],clickPosition;rand=(min,max)=>Math.random()*(max-min)+min;const confettiParams={number:70,size:{x:[5,20],y:[10,18]},initSpeed:25,gravity:0.65,drag:0.08,terminalVelocity:6,flipSpeed:0.017,};const colors=[{front:'#3B870A',back:'#235106'},{front:'#B96300',back:'#6f3b00'},{front:'#E23D34',back:'#88251f'},{front:'#CD3168',back:'#7b1d3e'},{front:'#664E8B',back:'#3d2f53'},{front:'#394F78',back:'#222f48'},{front:'#008A8A',back:'#005353'},];setupCanvas();updateConfetti();confetti.addEventListener('click',addConfetti);window.addEventListener('resize',()=>{setupCanvas();hideConfetti()});function Conf(){this.randomModifier=rand(-1,1);this.colorPair=colors[Math.floor(rand(0,colors.length))];this.dimensions={x:rand(confettiParams.size.x[0],confettiParams.size.x[1]),y:rand(confettiParams.size.y[0],confettiParams.size.y[1]),};this.position={x:clickPosition[0],y:clickPosition[1]};this.rotation=rand(0,2*Math.PI);this.scale={x:1,y:1};this.velocity={x:rand(-confettiParams.initSpeed,confettiParams.initSpeed)*0.4,y:rand(-confettiParams.initSpeed,confettiParams.initSpeed)};this.flipSpeed=rand(0.2,1.5)*confettiParams.flipSpeed;if(this.position.y<=container.h){this.velocity.y=-Math.abs(this.velocity.y)}this.terminalVelocity=rand(1,1.5)*confettiParams.terminalVelocity;this.update=function(){this.velocity.x*=0.98;this.position.x+=this.velocity.x;this.velocity.y+=(this.randomModifier*confettiParams.drag);this.velocity.y+=confettiParams.gravity;this.velocity.y=Math.min(this.velocity.y,this.terminalVelocity);this.position.y+=this.velocity.y;this.scale.y=Math.cos((this.position.y+this.randomModifier)*this.flipSpeed);this.color=this.scale.y>0?this.colorPair.front:this.colorPair.back}}function updateConfetti(){confettiCtx.clearRect(0,0,container.w,container.h);confettiElements.forEach((c)=>{c.update();confettiCtx.translate(c.position.x,c.position.y);confettiCtx.rotate(c.rotation);const width=(c.dimensions.x*c.scale.x);const height=(c.dimensions.y*c.scale.y);confettiCtx.fillStyle=c.color;confettiCtx.fillRect(-0.5*width,-0.5*height,width,height);confettiCtx.setTransform(1,0,0,1,0,0)});confettiElements.forEach((c,idx)=>{if(c.position.y>container.h||c.position.x<-0.5*container.x||c.position.x>1.5*container.x){confettiElements.splice(idx,1)}});window.requestAnimationFrame(updateConfetti)}function setupCanvas(){container={w:confetti.clientWidth,h:confetti.clientHeight};confetti.width=container.w;confetti.height=container.h}function addConfetti(e){const canvasBox=confetti.getBoundingClientRect();if(e){clickPosition=[e.clientX-canvasBox.left,e.clientY-canvasBox.top]}else{clickPosition=[canvasBox.width*Math.random(),canvasBox.height*Math.random()]}for(let i=0;i<confettiParams.number;i++){confettiElements.push(new Conf())}}function hideConfetti(){confettiElements=[];window.cancelAnimationFrame(updateConfetti)}confettiLoop();function confettiLoop(){addConfetti();setTimeout(confettiLoop,700+Math.random()*1700)}
 </script>
 </html>
