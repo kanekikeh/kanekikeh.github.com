@@ -2,19 +2,858 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>best wishes</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-  <style>
-    body,html{padding:0;margin:0}canvas{width:100%;height:100vh}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>万圣节主题</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        html, body {
+            overflow: hidden
+        }
+
+        body {
+            position: relative;
+            background: #1a2a6c;
+            background: -webkit-linear-gradient(to top, #fdbb2d, #b21f1f, #1a2a6c);
+            background: linear-gradient(to top, #fdbb2d, #b21f1f, #1a2a6c)
+        }
+    </style>
 </head>
 
 <body>
-  <canvas id="confetti"></canvas>
+
 </body>
 <script>
-  const confetti=document.getElementById('confetti');const confettiCtx=confetti.getContext('2d');let container,confettiElements=[],clickPosition;rand=(min,max)=>Math.random()*(max-min)+min;const confettiParams={number:70,size:{x:[5,20],y:[10,18]},initSpeed:25,gravity:0.65,drag:0.08,terminalVelocity:6,flipSpeed:0.017,};const colors=[{front:'#3B870A',back:'#235106'},{front:'#B96300',back:'#6f3b00'},{front:'#E23D34',back:'#88251f'},{front:'#CD3168',back:'#7b1d3e'},{front:'#664E8B',back:'#3d2f53'},{front:'#394F78',back:'#222f48'},{front:'#008A8A',back:'#005353'},];setupCanvas();updateConfetti();confetti.addEventListener('click',addConfetti);window.addEventListener('resize',()=>{setupCanvas();hideConfetti()});function Conf(){this.randomModifier=rand(-1,1);this.colorPair=colors[Math.floor(rand(0,colors.length))];this.dimensions={x:rand(confettiParams.size.x[0],confettiParams.size.x[1]),y:rand(confettiParams.size.y[0],confettiParams.size.y[1]),};this.position={x:clickPosition[0],y:clickPosition[1]};this.rotation=rand(0,2*Math.PI);this.scale={x:1,y:1};this.velocity={x:rand(-confettiParams.initSpeed,confettiParams.initSpeed)*0.4,y:rand(-confettiParams.initSpeed,confettiParams.initSpeed)};this.flipSpeed=rand(0.2,1.5)*confettiParams.flipSpeed;if(this.position.y<=container.h){this.velocity.y=-Math.abs(this.velocity.y)}this.terminalVelocity=rand(1,1.5)*confettiParams.terminalVelocity;this.update=function(){this.velocity.x*=0.98;this.position.x+=this.velocity.x;this.velocity.y+=(this.randomModifier*confettiParams.drag);this.velocity.y+=confettiParams.gravity;this.velocity.y=Math.min(this.velocity.y,this.terminalVelocity);this.position.y+=this.velocity.y;this.scale.y=Math.cos((this.position.y+this.randomModifier)*this.flipSpeed);this.color=this.scale.y>0?this.colorPair.front:this.colorPair.back}}function updateConfetti(){confettiCtx.clearRect(0,0,container.w,container.h);confettiElements.forEach((c)=>{c.update();confettiCtx.translate(c.position.x,c.position.y);confettiCtx.rotate(c.rotation);const width=(c.dimensions.x*c.scale.x);const height=(c.dimensions.y*c.scale.y);confettiCtx.fillStyle=c.color;confettiCtx.fillRect(-0.5*width,-0.5*height,width,height);confettiCtx.setTransform(1,0,0,1,0,0)});confettiElements.forEach((c,idx)=>{if(c.position.y>container.h||c.position.x<-0.5*container.x||c.position.x>1.5*container.x){confettiElements.splice(idx,1)}});window.requestAnimationFrame(updateConfetti)}function setupCanvas(){container={w:confetti.clientWidth,h:confetti.clientHeight};confetti.width=container.w;confetti.height=container.h}function addConfetti(e){const canvasBox=confetti.getBoundingClientRect();if(e){clickPosition=[e.clientX-canvasBox.left,e.clientY-canvasBox.top]}else{clickPosition=[canvasBox.width*Math.random(),canvasBox.height*Math.random()]}for(let i=0;i<confettiParams.number;i++){confettiElements.push(new Conf())}}function hideConfetti(){confettiElements=[];window.cancelAnimationFrame(updateConfetti)}confettiLoop();function confettiLoop(){addConfetti();setTimeout(confettiLoop,700+Math.random()*1700)}
+    class Tool {
+        static randomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+
+        static randomColorRGB() {
+            return ("rgb(" + this.randomNumber(0, 255) + ", " + this.randomNumber(0, 255) + ", " + this.randomNumber(0, 255) + ")")
+        }
+
+        static randomColorHSL(saturation, lightness) {
+            return ("hsl(" + this.randomNumber(0, 360) + ", " + saturation + "%, " + lightness + "%)")
+        }
+
+        static gradientColor(ctx, cr, cg, cb, ca, x, y, r) {
+            const col = cr + "," + cg + "," + cb;
+            const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+            g.addColorStop(0, "rgba(" + col + ", " + (ca * 1) + ")");
+            g.addColorStop(0.5, "rgba(" + col + ", " + (ca * 0.5) + ")");
+            g.addColorStop(1, "rgba(" + col + ", " + (ca * 0) + ")");
+            return g
+        }
+    }
+
+    class Angle {
+        constructor(angle) {
+            this.a = angle;
+            this.rad = this.a * Math.PI / 180
+        }
+
+        incDec(num) {
+            this.a += num;
+            this.rad = this.a * Math.PI / 180;
+            return this.rad
+        }
+    }
+
+    class Controller {
+        constructor(id) {
+            this.id = document.getElementById(id)
+        }
+
+        getVal() {
+            return this.id.value
+        }
+    }
+
+    class Time {
+        constructor(time) {
+            this.startTime = time;
+            this.lastTime;
+            this.elapsedTime
+        }
+
+        getElapsedTime() {
+            this.lastTime = Date.now();
+            this.elapsedTime = (this.startTime - this.lastTime) * -1;
+            return this.elapsedTime
+        }
+    }
+
+    let canvas;
+
+    class Canvas {
+        constructor(bool) {
+            this.canvas = document.createElement("canvas");
+            if (bool === true) {
+                this.canvas.style.display = 'block';
+                this.canvas.style.top = 0;
+                this.canvas.style.left = 0;
+                document.getElementsByTagName("body")[0].appendChild(this.canvas)
+            }
+            this.ctx = this.canvas.getContext("2d");
+            this.width = this.canvas.width = window.innerWidth;
+            this.height = this.canvas.height = window.innerHeight;
+            this.standard = this.width > this.height ? this.width : this.height * 1.5;
+            this.mouseX = this.width / 2;
+            this.mouseY = this.height / 10;
+            this.mouseZ = null;
+            this.ground;
+            this.groundHeight = 100;
+            this.graves = [];
+            this.graveSize = this.standard / 50;
+            this.graveDist = 10;
+            this.graveTime = null;
+            this.graveBehavior = 1;
+            this.pumpkin;
+            this.pumpkinSize = this.standard / 9;
+            this.pumpkinTime = null;
+            this.pumpkinBehavior = 1;
+            this.text;
+            this.sentence = this.width > this.height ? 'HAPPY HALLOWEEN' : 'HALLOWEEN';
+            this.textSize = this.standard / 4;
+            this.fontSize = this.standard / 25;
+            this.textTime = null;
+            this.textBehavior = null;
+            this.houses = [];
+            this.houseSize = this.standard / 10;
+            this.houseNum = 3;
+            this.houseTime = null;
+            this.houseBehavior = null;
+            this.spiders = [];
+            this.spiderSize = this.standard / 80;
+            this.spiderNum = 3;
+            this.spiderTime = null;
+            this.spiderBehavior = null;
+            this.pointX = this.width + 100;
+            this.pointY = Tool.randomNumber(0, this.height / 10);
+            this.starNum = 300;
+            this.stars = [];
+            this.starBehavior = null;
+            this.v = {x: 0, y: 0}
+        }
+
+        init() {
+            this.ground = new Ground(this.ctx, 0, this.height - this.groundHeight);
+            this.text = new Text(this.ctx, this.width / 2, this.height / 8, this.textSize, this.fontSize, this.sentence);
+            let index = 0;
+            for (let i = 50; i < this.width; i += this.graveDist) {
+                const gap = Tool.randomNumber(30, 80);
+                const g = new Grave(this.ctx, i, Tool.randomNumber(0, this.height / 2), this.graveSize, index);
+                this.graves.push(g);
+                i += gap;
+                index++
+            }
+            this.pumpkin = new Pumpkin(this.ctx, 0, 0, this.pumpkinSize);
+            for (let i = 0; i < this.houseNum; i++) {
+                const h = new House(this.ctx, this.width / (10 - i * 2), this.height - this.groundHeight, this.houseSize);
+                this.houses.push(h)
+            }
+            for (let i = 0; i < this.spiderNum; i++) {
+                const s = new Spider(this.ctx, Tool.randomNumber(this.width - this.width / 3, this.width), Tool.randomNumber(50, this.height / 2), this.spiderSize);
+                this.spiders.push(s)
+            }
+            for (let i = 0; i < this.starNum; i++) {
+                const s = new Star(this.ctx, this.pointX, this.pointY);
+                this.stars.push(s)
+            }
+        }
+
+        render() {
+            this.ctx.clearRect(0, 0, this.width, this.height);
+            for (let i = 0; i < this.graves.length; i++) {
+                this.graves[i].render()
+            }
+            if (this.houseBehavior === 1) {
+                for (let i = 0; i < this.houses.length; i++) {
+                    this.houses[i].render()
+                }
+            }
+            if (this.spiderBehavior === 1) {
+                for (let i = 0; i < this.spiders.length; i++) {
+                    this.spiders[i].render()
+                }
+            }
+            if (this.pumpkinBehavior >= 1) {
+                this.pumpkin.render()
+            }
+            for (let i = 0; i < this.stars.length; i++) {
+                this.stars[i].render()
+            }
+            if (this.pointX < -canvas.width / 4) {
+                this.graveBehavior = 2
+            }
+            this.ground.render();
+            if (this.textBehavior === 1) {
+                this.text.render()
+            }
+            if (this.pumpkinBehavior === 5) {
+                this.v.x += (this.mouseX - this.pointX) * 0.1;
+                this.v.y += (this.mouseY - this.pointY) * 0.1;
+                this.v.x *= 0.9;
+                this.v.y *= 0.9;
+                this.pointX += this.v.x;
+                this.pointY += this.v.y
+            } else {
+                this.pointX -= 10;
+                this.pointY += 1
+            }
+        }
+
+        resize() {
+            this.width = this.canvas.width = window.innerWidth;
+            this.height = this.canvas.height = window.innerHeight;
+            this.ground;
+            this.groundHeight = 100;
+            this.graves = [];
+            this.graveSize = this.standard / 50;
+            this.graveDist = 10;
+            this.graveTime = null;
+            this.graveBehavior = 1;
+            this.pumpkin;
+            this.pumpkinSize = this.standard / 9;
+            this.pumpkinTime = null;
+            this.pumpkinBehavior = 1;
+            this.text;
+            this.sentence = this.width > this.height ? 'HAPPY HALLOWEEN' : 'HALLOWEEN';
+            this.textSize = this.standard / 4;
+            this.fontSize = this.standard / 25;
+            this.textTime = null;
+            this.textBehavior = null;
+            this.houses = [];
+            this.houseSize = this.standard / 10;
+            this.houseNum = 3;
+            this.houseTime = null;
+            this.houseBehavior = null;
+            this.spiders = [];
+            this.spiderSize = this.standard / 80;
+            this.spiderNum = 3;
+            this.spiderTime = null;
+            this.spiderBehavior = null;
+            this.pointX = this.width + 100;
+            this.pointY = Tool.randomNumber(0, this.height / 10);
+            this.starNum = 300;
+            this.stars = [];
+            this.starBehavior = null;
+            this.v = {x: 0, y: 0};
+            this.init()
+        }
+    }
+
+    class Ground {
+        constructor(ctx, x, y) {
+            this.ctx = ctx;
+            this.init(x, y)
+        }
+
+        init(x, y) {
+            this.x = x;
+            this.y = y;
+            this.c = 'black'
+        }
+
+        draw() {
+            const ctx = this.ctx;
+            ctx.save();
+            ctx.fillStyle = this.c;
+            ctx.fillRect(this.x, this.y, canvas.width, canvas.height - this.y);
+            ctx.restore()
+        }
+
+        render() {
+            this.draw()
+        }
+    }
+
+    class House {
+        constructor(ctx, x, y, s) {
+            this.ctx = ctx;
+            this.init(x, y, s)
+        }
+
+        init(x, y, s) {
+            this.a = new Angle(Tool.randomNumber(-5, 5));
+            this.x = x;
+            this.y = -20;
+            this.yi = y + 20;
+            this.r = Tool.randomNumber(s / 3, s);
+            this.c = {b: 'black', y: 'yellow'};
+            this.v = {y: 0}
+        }
+
+        draw() {
+            const ctx = this.ctx;
+            ctx.save();
+            ctx.fillStyle = this.c.b;
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.a.rad);
+            ctx.translate(-this.x, -this.y);
+            ctx.fillRect(this.x - this.r / 2, this.y - this.r * 2, this.r, this.r * 2);
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y - this.r * 3);
+            ctx.lineTo(this.x + this.r, this.y - this.r * 2);
+            ctx.lineTo(this.x - this.r, this.y - this.r * 2);
+            ctx.closePath();
+            ctx.fill();
+            ctx.lineWidth = this.r / 10;
+            ctx.fillStyle = this.c.y;
+            ctx.fillRect(this.x - this.r / 3, this.y - this.r * 1.8, this.r / 1.5, this.r / 1.5);
+            ctx.strokeStyle = this.c.b;
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y - this.r * 1.8);
+            ctx.lineTo(this.x, this.y - this.r * 1.1);
+            ctx.stroke();
+            ctx.restore()
+        }
+
+        updatePosition() {
+            this.v.y += (this.yi - this.y) * 0.3;
+            this.v.y *= 0.8;
+            this.y += this.v.y
+        }
+
+        manageBehavior() {
+            if (canvas.houseTime === null) canvas.houseTime = new Time(new Date());
+            if (canvas.houseTime.getElapsedTime() > 400) {
+                canvas.spiderBehavior = 1
+            }
+        }
+
+        render() {
+            this.draw();
+            this.updatePosition();
+            this.manageBehavior()
+        }
+    }
+
+    class Spider {
+        constructor(ctx, x, y, s) {
+            this.ctx = ctx;
+            this.init(x, y, s)
+        }
+
+        init(x, y, s) {
+            this.a = new Angle(Tool.randomNumber(0, 360));
+            this.x = x;
+            this.y = -20;
+            this.yi = y;
+            this.r = Tool.randomNumber(s / 3, s);
+            this.lw = this.r / 5;
+            this.c = 'black';
+            this.v = {y: 0}
+        }
+
+        drawSpider() {
+            const ctx = this.ctx;
+            ctx.save();
+            ctx.translate(this.x, 0);
+            ctx.rotate(0.3 * Math.sin(this.a.rad));
+            ctx.translate(-this.x, 0);
+            ctx.strokeStyle = this.c;
+            ctx.fillStyle = this.c;
+            ctx.lineWidth = this.lw;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y - this.r * 0.9, this.r, 0, Math.PI * 2, false);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(this.x, this.y + this.r * 0.9, this.r, 0, Math.PI * 2, false);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.x, 0);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.quadraticCurveTo(this.x + this.r * 2, this.y, this.x + this.r * 2, this.y - this.r * 3);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.quadraticCurveTo(this.x - this.r * 2, this.y, this.x - this.r * 2, this.y - this.r * 3);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.quadraticCurveTo(this.x + this.r * 2, this.y, this.x + this.r * 3, this.y - this.r);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.quadraticCurveTo(this.x - this.r * 2, this.y, this.x - this.r * 3, this.y - this.r);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.quadraticCurveTo(this.x + this.r * 2, this.y, this.x + this.r * 2, this.y + this.r * 3);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.quadraticCurveTo(this.x - this.r * 2, this.y, this.x - this.r * 2, this.y + this.r * 3);
+            ctx.stroke();
+            ctx.restore()
+        }
+
+        updatePosition() {
+            this.v.y += (this.yi - this.y) * 0.3;
+            this.v.y *= 0.8;
+            this.y += this.v.y
+        }
+
+        manageBehavior() {
+            if (canvas.spiderTime === null) canvas.spiderTime = new Time(new Date());
+            if (canvas.spiderTime.getElapsedTime() > 400) {
+                if (canvas.pumpkinBehavior === 1) canvas.pumpkinBehavior = 2
+            }
+        }
+
+        render() {
+            this.drawSpider();
+            this.updatePosition();
+            this.manageBehavior();
+            this.a.incDec(1)
+        }
+    }
+
+    class Text {
+        constructor(ctx, x, y, s, fs, t) {
+            this.ctx = ctx;
+            this.init(x, y, s, fs, t)
+        }
+
+        init(x, y, s, fs, t) {
+            this.a = new Angle(0);
+            this.x = x;
+            this.y = y;
+            this.yi = canvas.height - canvas.groundHeight / 2;
+            this.r = 0;
+            this.ri = s;
+            this.c = 'black';
+            this.s = fs;
+            this.fs = 0;
+            this.t = t;
+            this.l = this.t.length - 1;
+            this.rad = Math.PI / 1.5 / this.l;
+            this.v = {y: 0, r: 0}
+        }
+
+        draw() {
+            const ctx = this.ctx;
+            ctx.save();
+            ctx.lineJoin = 'bevel';
+            ctx.lineWidth = 10;
+            ctx.strokeStyel = 'black';
+            ctx.fillStyle = 'yellow';
+            ctx.font = this.fs + 'px "arial black", sans-selif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.strokeText(this.t, this.x, this.y);
+            ctx.fillText(this.t, this.x, this.y);
+            ctx.restore()
+        }
+
+        elasticity() {
+            this.v.r += (this.s - this.fs) * 0.3;
+            this.v.r *= 0.8;
+            this.fs += this.v.r
+        }
+
+        updatePosition() {
+            this.v.y += (this.yi - this.y) * 0.3;
+            this.v.y *= 0.8;
+            this.y += this.v.y
+        }
+
+        render() {
+            this.draw();
+            this.elasticity();
+            this.a.incDec(0.5);
+            if (canvas.textTime === null) canvas.textTime = new Time(new Date());
+            if (canvas.textTime.getElapsedTime() > 400) {
+                canvas.pumpkinBehavior = 4;
+                this.updatePosition()
+            }
+            if (canvas.textTime.getElapsedTime() > 800) {
+                canvas.pumpkinBehavior = 5
+            }
+        }
+    }
+
+    class Grave {
+        constructor(ctx, x, y, s, i) {
+            this.ctx = ctx;
+            this.init(x, y, s, i)
+        }
+
+        init(x, y, s, i) {
+            this.behavior = 1;
+            this.a = new Angle(Tool.randomNumber(0, 360));
+            this.a1 = new Angle(Tool.randomNumber(-10, 10));
+            this.x = x;
+            this.y = y;
+            this.i = i;
+            this.r = 0;
+            this.maxR = Tool.randomNumber(s / 8, s);
+            this.c = {b: 'black', y: 'yellow'};
+            this.v = {x: 0, y: 10, r: 0};
+            this.h = Tool.randomNumber(s / 10, s);
+            this.lw = Tool.randomNumber(5, 10);
+            this.rad = Math.PI / 5 * 4
+        }
+
+        drawStar() {
+            const ctx = this.ctx;
+            ctx.save();
+            ctx.fillStyle = this.c.y;
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.a.rad);
+            ctx.translate(-this.x, -this.y);
+            ctx.beginPath();
+            for (let i = 0; i < 5; i++) {
+                let x = Math.cos(this.rad * i) * this.r + this.x;
+                let y = Math.sin(this.rad * i) * this.r + this.y;
+                ctx.lineTo(x, y)
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore()
+        }
+
+        drawGrave() {
+            const ctx = this.ctx;
+            ctx.save();
+            ctx.strokeStyle = this.c;
+            ctx.lineWidth = this.lw;
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.a1.rad);
+            ctx.translate(-this.x, -this.y);
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.x, this.y - this.r * 6);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(this.x - this.r, this.y - this.r * 4);
+            ctx.lineTo(this.x + this.r, this.y - this.r * 4);
+            ctx.stroke();
+            ctx.restore()
+        }
+
+        updatePosition() {
+            this.y += this.v.y;
+            if (this.y > canvas.height - canvas.groundHeight) {
+                this.r = 0;
+                this.y = canvas.height - canvas.groundHeight;
+                this.behavior = 2
+            }
+        }
+
+        elasticity() {
+            this.v.r += (this.maxR - this.r) * 0.3;
+            this.v.r *= 0.8;
+            this.r += this.v.r
+        }
+
+        render() {
+            if (this.behavior === 1 && canvas.graveBehavior === 1) {
+                this.drawStar();
+                this.elasticity()
+            }
+            if (this.behavior === 1 && canvas.graveBehavior === 2) {
+                this.drawStar();
+                this.updatePosition()
+            }
+            if (this.behavior === 2) {
+                this.drawGrave();
+                this.elasticity();
+                if (canvas.graveTime === null) canvas.graveTime = new Time(new Date());
+                if (canvas.graveTime.getElapsedTime() > 800) canvas.houseBehavior = 1
+            }
+        }
+    }
+
+    class Pumpkin {
+        constructor(ctx, x, y, s) {
+            this.ctx = ctx;
+            this.init(x, y, s)
+        }
+
+        init(x, y, s) {
+            this.a = new Angle(0);
+            this.x = x;
+            this.y = y;
+            this.r = 0;
+            this.mr = 0;
+            this.maxR = s;
+            this.c = {f: 'rgb(254, 109, 5)', l: 'rgb(255, 153, 0)', e: 'black', g: 'gray', w: 'white', y: 'yellow'};
+            this.v = {x: 0, y: 0, r: 0}
+        }
+
+        drawMoon() {
+            const ctx = this.ctx;
+            ctx.save();
+            ctx.fillStyle = this.c.y;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+            ctx.fill();
+            ctx.restore()
+        }
+
+        drawPumpkin() {
+            const ctx = this.ctx;
+            ctx.save();
+            ctx.strokeStyle = this.c.e;
+            ctx.fillStyle = this.c.e;
+            ctx.beginPath();
+            ctx.ellipse(this.x, this.y - this.r * 0.8, this.r * 1.8, this.r * 0.5, 0, Math.PI * 2, false);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(this.x - this.r * 0.8, this.y - this.r);
+            ctx.lineTo(this.x, this.y - this.r * 2);
+            ctx.lineTo(this.x + this.r * 0.8, this.y - this.r);
+            ctx.closePath();
+            ctx.fill();
+            ctx.fillStyle = this.c.f;
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y + this.r);
+            ctx.bezierCurveTo(this.x + this.r, this.y + this.r, this.x + this.r * 1.3, this.y + this.r * 0.4, this.x + this.r * 1.3, this.y);
+            ctx.bezierCurveTo(this.x + this.r * 1.3, this.y - this.r * 0.4, this.x + this.r, this.y - this.r, this.x, this.y - this.r);
+            ctx.bezierCurveTo(this.x - this.r, this.y - this.r, this.x - this.r * 1.3, this.y - this.r * 0.4, this.x - this.r * 1.3, this.y);
+            ctx.bezierCurveTo(this.x - this.r * 1.3, this.y + this.r * 0.4, this.x - this.r, this.y + this.r, this.x, this.y + this.r);
+            ctx.closePath();
+            ctx.fill();
+            if (ctx.isPointInPath(canvas.mouseX, canvas.mouseY) && canvas.pumpkinBehavior === 5) {
+                canvas.pumpkinBehavior = 4
+            }
+            ctx.clip();
+            ctx.strokeStyle = this.c.l;
+            ctx.lineWidth = this.r / 5;
+            ctx.beginPath();
+            ctx.ellipse(this.x, this.y, this.r / 1.5, this.r * 1.5, 0, 0, Math.PI * 2, false);
+            ctx.stroke();
+            ctx.fillStyle = this.c.e;
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y - this.r / 8);
+            ctx.lineTo(this.x + this.r / 8, this.y + this.r / 8);
+            ctx.lineTo(this.x - this.r / 8, this.y + this.r / 8);
+            ctx.closePath();
+            ctx.fill();
+            canvas.pumpkinBehavior === 4 ? this.drawEyes2() : this.drawEyes();
+            ctx.beginPath();
+            ctx.moveTo(this.x + this.r, this.y + this.r * 0.2);
+            ctx.quadraticCurveTo(this.x, this.y + this.r * 1.2, this.x - this.r, this.y + this.r * 0.2);
+            ctx.quadraticCurveTo(this.x, this.y + this.r * 0.5, this.x + this.r, this.y + this.r * 0.2);
+            ctx.closePath();
+            ctx.fill();
+            if (canvas.pumpkinBehavior === 5) this.drawMask();
+            ctx.restore()
+        }
+
+        drawEyes() {
+            const ctx = this.ctx;
+            ctx.beginPath();
+            ctx.moveTo(this.x + this.r / 2, this.y - this.r / 2);
+            ctx.lineTo(this.x + this.r / 2 + this.r / 3, this.y - this.r / 2 + this.r / 3);
+            ctx.lineTo(this.x + this.r / 2 - this.r / 3, this.y - this.r / 2 + this.r / 3);
+            ctx.closePath();
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(this.x - this.r / 2, this.y - this.r / 2);
+            ctx.lineTo(this.x - this.r / 2 + this.r / 3, this.y - this.r / 2 + this.r / 3);
+            ctx.lineTo(this.x - this.r / 2 - this.r / 3, this.y - this.r / 2 + this.r / 3);
+            ctx.closePath();
+            ctx.fill()
+        }
+
+        drawEyes2() {
+            const ctx = this.ctx;
+            ctx.save();
+            ctx.translate(this.x + this.r / 2, this.y - this.r / 3);
+            ctx.scale(1, Math.sin(this.a.rad));
+            ctx.translate(-this.x - this.r / 2, -this.y + this.r / 3);
+            ctx.beginPath();
+            ctx.arc(this.x + this.r / 2, this.y - this.r / 3, this.r / 10, 0, Math.PI * 2, false);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(this.x - this.r / 2, this.y - this.r / 3, this.r / 10, 0, Math.PI * 2, false);
+            ctx.fill();
+            ctx.restore()
+        }
+
+        drawMask() {
+            const ctx = this.ctx;
+            ctx.save();
+            ctx.fillStyle = this.c.e;
+            ctx.beginPath();
+            ctx.fillRect(this.x - this.mr, this.y, this.mr * 2, this.mr * 0.8);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = this.c.g;
+            ctx.beginPath();
+            ctx.moveTo(this.x - this.mr * 0.9, this.y);
+            ctx.lineTo(this.x - this.mr * 0.9, this.y + this.mr * 0.8);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(this.x + this.mr * 0.9, this.y);
+            ctx.lineTo(this.x + this.mr * 0.9, this.y + this.mr * 0.8);
+            ctx.stroke();
+            ctx.strokeStyle = this.c.e;
+            ctx.lineWidth = this.mr / 20;
+            ctx.beginPath();
+            ctx.moveTo(this.x + this.mr, this.y);
+            ctx.lineTo(this.x + this.mr + this.mr, this.y - this.mr);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(this.x - this.mr, this.y);
+            ctx.lineTo(this.x - this.mr - this.mr, this.y - this.mr);
+            ctx.stroke();
+            ctx.fillStyle = this.c.w;
+            ctx.font = this.maxR / 6 + 'px "arial black", sans-selif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('TRICK or TREAT', this.x, this.y + this.mr * 0.4);
+            ctx.restore()
+        }
+
+        elasticity() {
+            this.v.r += (this.maxR - this.r) * 0.3;
+            this.v.r *= 0.8;
+            this.r += this.v.r
+        }
+
+        maskElasticity() {
+            this.v.r += (this.maxR - this.mr) * 0.3;
+            this.v.r *= 0.9;
+            this.mr += this.v.r
+        }
+
+        updatePosition() {
+            this.v.x = canvas.width / 2 - this.x;
+            this.v.y = canvas.height / 2 - this.y;
+            if (this.v.x < 3 && this.v.y < 3) {
+                this.r = 0;
+                canvas.pumpkinTime = null;
+                canvas.pumpkinBehavior = 3
+            }
+            this.v.x /= 10;
+            this.v.y /= 10;
+            this.x += this.v.x;
+            this.y += this.v.y
+        }
+
+        render() {
+            if (canvas.pumpkinBehavior === 1) {
+                this.drawMoon();
+                this.elasticity()
+            }
+            if (canvas.pumpkinBehavior === 2) {
+                this.drawMoon();
+                this.elasticity();
+                this.updatePosition()
+            }
+            if (canvas.pumpkinBehavior === 3) {
+                this.drawPumpkin();
+                this.elasticity();
+                if (canvas.pumpkinTime === null) canvas.pumpkinTime = new Time(new Date());
+                if (canvas.pumpkinTime.getElapsedTime() > 400) {
+                    canvas.textBehavior = 1
+                }
+            }
+            if (canvas.pumpkinBehavior >= 4) {
+                this.drawPumpkin();
+                this.maskElasticity()
+            }
+            this.a.incDec(20)
+        }
+    }
+
+    class Star {
+        constructor(ctx, x, y) {
+            this.ctx = ctx;
+            this.init(x, y)
+        }
+
+        init(x, y) {
+            this.a = new Angle(0);
+            this.x = canvas.pointX || x;
+            this.y = canvas.pointY || y;
+            this.lw = 1;
+            this.l = Tool.randomNumber(0, 100);
+            this.ga = Math.random() * Math.random();
+            this.rad = Math.PI * 2 / 8;
+            this.r = Tool.randomNumber(5, 20);
+            this.v = {
+                x: Math.cos(Tool.randomNumber(0, 360) * Math.PI / 180) * Math.random() * 2,
+                y: Math.sin(Tool.randomNumber(0, 360) * Math.PI / 180) * Math.random() * 2
+            };
+            this.c = {y: 'yellow'}
+        }
+
+        draw() {
+            const ctx = this.ctx;
+            ctx.save();
+            ctx.lineWidth = this.lw;
+            ctx.globalAlpha = this.ga;
+            ctx.globalCompositeOperation = 'lighter';
+            ctx.strokeStyle = 'hsl(' + Math.sin(this.a.rad) * 360 + ', 80%, 60%)';
+            for (var i = 1; i < 9; i++) {
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(Math.cos(this.rad * i) * this.r + this.x, Math.sin(this.rad * i) * this.r + this.y);
+                ctx.stroke()
+            }
+            ctx.restore()
+        }
+
+        updatePosition() {
+            this.a.incDec(1);
+            this.v.y += 0.05;
+            this.x += this.v.x;
+            this.y += this.v.y
+        }
+
+        updateParams() {
+            this.l -= 1;
+            if (this.l < 0) {
+                this.init(canvas.pointX, canvas.pointY)
+            }
+        }
+
+        render() {
+            this.draw();
+            this.updatePosition();
+            this.updateParams()
+        }
+    }
+
+    (function () {
+        "use strict";
+        window.addEventListener("load", function () {
+            canvas = new Canvas(true);
+            canvas.init();
+
+            function render() {
+                window.requestAnimationFrame(function () {
+                    canvas.render();
+                    render()
+                })
+            }
+
+            render();
+            window.addEventListener("resize", function () {
+                canvas.resize()
+            }, false);
+            canvas.canvas.addEventListener('mousemove', function (e) {
+                canvas.mouseX = e.clientX;
+                canvas.mouseY = e.clientY
+            }, false);
+            canvas.canvas.addEventListener('touchmove', function (e) {
+                const touch = e.targetTouches[0];
+                canvas.mouseX = touch.pageX;
+                canvas.mouseY = touch.pageY
+            }, false)
+        })
+    })();
 </script>
 </html>
